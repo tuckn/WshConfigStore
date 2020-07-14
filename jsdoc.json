@@ -1,0 +1,63 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc"]
+  },
+  "source": {
+    "include": ["./src/", "./README.md"],
+    "includePattern": ".js$",
+    "excludePattern": "(./node_modules/|./WshModules/|./test/|.test.js)"
+  },
+  "plugins": ["plugins/markdown"],
+  "opts": {
+    "destination": "./docs/",
+    "encoding": "utf8",
+    "recurse": true,
+    "verbose": true,
+    "template": "./node_modules/docdash"
+  },
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true,
+    "idInHeadings": true
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+      "outputSourceFiles": true,
+      "includeDate": false,
+      "useLongnameInNav": true
+    }
+  },
+  "docdash": {
+    "static": true,
+    "sort": true,
+    "disqus": "",
+    "openGraph": {
+      "title": "WshConfigStore",
+      "type": "website",
+      "image": "https://docs.tuckn.net/WshConfigStore/img/openGraph-image.png",
+      "site_name": "@tuckn/WshConfigStore",
+      "url": "https://docs.tuckn.net/WshConfigStore"
+    },
+    "meta": {
+      "title": "WshConfigStore",
+      "description": "The config manager for WSH (Windows Script Host) that reads/writes configuration values in a JSON file.",
+      "keyword": "Windows, WSH, WSF, JScript, VBScript, config, settings, json, preferences"
+    },
+    "search": true,
+    "collapse": false,
+    "wrap": false,
+    "typedefs": true,
+    "removeQuotes": "none",
+    "menu": {
+      "Github repo": {
+        "href": "https://github.com/tuckn/WshConfigStore",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "repository"
+      }
+    }
+  }
+}
