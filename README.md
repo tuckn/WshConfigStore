@@ -100,15 +100,16 @@ var conf = new Wsh.ConfigStore();
 // Equal with `new Wsh.ConfigStore(null, { dirPath: 'cwd' });`
 
 conf.path;
-// Returns: <Current Working Directory>\.wsh\settings.json
+// Returns: %CD%\.wsh\settings.json
 
 conf.store;
 // Returns: An Object in the above settings.json.
 // Ex: { objName: { propName: 'value' } }
 
 // Gets the item.
-conf.get('objName'); // Returns: { propName: 'value' }
-conf.get('objName.propName'); // Returns: 'value'
+conf.get(); // undefined
+conf.get('objName'); // { propName: 'value' }
+conf.get('objName.propName'); // 'value'
 conf.get('propNameB'); // undefined
 
 // Checks if store has the item.
@@ -131,7 +132,7 @@ conf.has('propNameB'); // false
 // Default
 var conf = new Wsh.ConfigStore();
 // Equal with `new Wsh.ConfigStore(null, { dirPath: 'cwd' });`
-conf.path; // Returns: <Current Working Directory>\.wsh\settings.json
+conf.path; // Returns: %CD%\.wsh\settings.json
 
 // Portable
 var conf = new Wsh.ConfigStore(null, { dirPath: 'portable' });

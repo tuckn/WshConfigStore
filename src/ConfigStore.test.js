@@ -45,6 +45,8 @@ describe('ConfigStore', function () {
     // Gets all the config
     expect(conf.store).toEqual(obj);
 
+    expect(conf.get()).toBeUndefined();
+
     // Checks if an item exists.
     expect(conf.has('d')).toBe(true);
     // Gets an item

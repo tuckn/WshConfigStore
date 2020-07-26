@@ -49,11 +49,11 @@
   /**
    * @private
    * @param {string} [fileName]
-   * @param {string} [dirPath] - cwd/portable/userProfile/<dir path>
+   * @param {string} [dirPath] - "cwd", "portable", "userProfile", <dir path>
    * @returns {string}
    */
   var _makeSettingsPath = function (fileName, dirPath) {
-    // var functionName = '_makeSettingsPath';
+    // var FN = '_makeSettingsPath';
 
     var confFileName = DEF_NAME;
     if (isSolidString(fileName)) confFileName = fileName;
@@ -85,7 +85,7 @@
    * @returns {any}
    */
   var _loadSettingsFile = function (filePath, options) {
-    var functionName = '_loadSettingsFile';
+    var FN = '_loadSettingsFile';
 
     try {
       return fse.readJsonSync(filePath, options);
@@ -96,7 +96,7 @@
         return {}; // Ignore no existing error
       } else if (/SyntaxError/i.test(errStr)) {
         throw new Error(insp(e) + '\n'
-          + '  at ' + functionName + ' (' + MODULE_TITLE + ')\n'
+          + '  at ' + FN + ' (' + MODULE_TITLE + ')\n'
           + '  Check syntax of the file "' + filePath + '"');
       } else {
         throw e;
@@ -113,7 +113,7 @@
    * @returns {void}
    */
   function _saveSettingsFile (filePath, storeObj, options) {
-    var functionName = '_saveSettingsFile';
+    var FN = '_saveSettingsFile';
 
     var indent = hasIn(options, 'indent') ? options.indent : 2;
     if (indent === null || indent === undefined) indent = 2;
@@ -124,7 +124,7 @@
         objAssign({}, options, { indent: indent }));
     } catch (e) {
       throw new Error(insp(e) + '\n'
-        + '  at ' + functionName + ' (' + MODULE_TITLE + ')\n'
+        + '  at ' + FN + ' (' + MODULE_TITLE + ')\n'
         + '  filePath: "' + filePath + '"');
     }
   } // }}}
@@ -138,29 +138,23 @@
    * var conf = new Wsh.ConfigStore();
    * // Equal with `new Wsh.ConfigStore(null, { dirPath: 'cwd' });`
    *
-   * conf.path;
-   * // Returns: <Current Working Directory>\.wsh\settings.json
-   *
-   * conf.store;
-   * // Returns: An Object in the above settings.json.
+   * conf.path; // %CD%\.wsh\settings.json
+   * conf.store; // Returns: An Object in the above settings.json.
    *
    * // Ex.2: Portable
    * var conf = new Wsh.ConfigStore(null, { dirPath: 'portable' });
    *
-   * conf.path;
-   * // Returns: <Wsh Script Directory>\.wsh\settings.json
+   * conf.path; // <Wsh Script Directory>\.wsh\settings.json
    *
    * // Ex.3: UserProfile
    * var conf = new Wsh.ConfigStore('myStore', { dirPath: 'userProfile' });
    *
-   * conf.path;
-   * // Returns: %USERPROFILE%\myStore.json
+   * conf.path; // %USERPROFILE%\myStore.json
    *
    * // Ex.4: Specifing absolute path
    * var conf = new Wsh.ConfigStore(null, { dirPath: 'C:\\tmp' });
    *
-   * conf.path;
-   * // Returns: C:\tmp\settings.json
+   * conf.path; // C:\tmp\settings.json
    * @name ConfigStore
    * @class
    * @param {string} [fileName] - The JSON file name to read/write.
@@ -170,7 +164,7 @@
    * @returns {object} - Wsh.ConfigStore instance.
    */
   Wsh.ConfigStore = function (fileName, options) {
-    // var functionName = 'Conf';
+    // var FN = 'Conf';
 
     // Constructor
     this.path = _makeSettingsPath(
@@ -188,8 +182,10 @@
      * @example
      * var conf = new Wsh.ConfigStore();
      *
-     * conf.store;
-     * // Returns: {}
+     * conf.path; // %CD%\.wsh\settings.json
+     * conf.store; // Returns: {}
+     *
+     * // Set values and update the JSON file.
      *
      * conf.set({ a: [{ b: { c: 3 } }], d: 'D' });
      * conf.store;
@@ -229,8 +225,8 @@
      * @example
      * var conf = new Wsh.ConfigStore();
      *
-     * conf.store;
-     * // Returns: { a: [{ b: { c: 3 } }], d: 'D' }
+     * conf.path; // %CD%\.wsh\settings.json
+     * conf.store; // { a: [{ b: { c: 3 } }], d: 'D' }
      *
      * conf.has('a'); // true
      * conf.has('a.0.b'); // true
@@ -252,9 +248,10 @@
      * @example
      * var conf = new Wsh.ConfigStore();
      *
-     * conf.store;
-     * // Returns: { a: [{ b: { c: 3 } }], d: 'D' }
+     * conf.path; // %CD%\.wsh\settings.json
+     * conf.store; // { a: [{ b: { c: 3 } }], d: 'D' }
      *
+     * conf.get(); // undefined
      * conf.get('a'); // [{ b: { c: 3 } }]
      * conf.get('a.0.b'); // { c: 3 }
      * conf.get(['a', 0, 'b', 'c']); // 3
@@ -277,16 +274,15 @@
      * @example
      * var conf = new Wsh.ConfigStore();
      *
-     * conf.store;
-     * // Returns: { a: [{ b: { c: 3 } }], d: 'D' }
+     * conf.path; // %CD%\.wsh\settings.json
+     * conf.store; // { a: [{ b: { c: 3 } }], d: 'D' }
      *
      * conf.has('a'); // true
      * conf.has('d'); // true
      * conf.del('d');
      * conf.has('d'); // false
      *
-     * conf.store;
-     * // Returns: { a: [{ b: { c: 3 } }] }
+     * conf.store; // { a: [{ b: { c: 3 } }] }
      * @name del
      * @memberof Wsh.ConfigStore
      * @param {(string|string[])} propPath - The path of the property to delte.
@@ -303,8 +299,8 @@
      * @example
      * var conf = new Wsh.ConfigStore();
      *
-     * conf.store;
-     * // Returns: { a: [{ b: { c: 3 } }], d: 'D' }
+     * conf.path; // %CD%\.wsh\settings.json
+     * conf.store; // { a: [{ b: { c: 3 } }], d: 'D' }
      *
      * conf.has('a'); // true
      * conf.has(['a', 0, 'b', 'c']); // true
@@ -312,8 +308,7 @@
      *
      * console.clear();
      *
-     * conf.store;
-     * // Returns: {}
+     * conf.store; // Returns: {}
      * @name clear
      * @memberof Wsh.ConfigStore
      * @returns {void}
