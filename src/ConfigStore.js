@@ -173,6 +173,18 @@
     );
     var __fileOptions = obtain(options, 'fileOptions', null);
 
+    // store
+    /**
+     * Returns the object in read JSON file.
+     *
+     * @example
+     * var conf = new Wsh.ConfigStore();
+     *
+     * conf.store; // { a: [{ b: { c: 3 } }], d: 'D' }
+     * @name store
+     * @memberof Wsh.ConfigStore
+     * @returns {void}
+     */
     this.store = _loadSettingsFile(this.path, __fileOptions);
 
     // set {{{
