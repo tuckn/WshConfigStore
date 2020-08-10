@@ -25,6 +25,7 @@
   var obtain = util.obtainPropVal;
   var isSolidString = util.isSolidString;
   var isPlainObject = util.isPlainObject;
+  var parseDate = util.parseDateLiteral;
   var hasIn = util.hasIn;
   var unset = util.unset;
   var cloneDeep = util.cloneDeep;
@@ -58,6 +59,7 @@
     var confFileName = DEF_NAME;
     if (isSolidString(fileName)) confFileName = fileName;
     if (!/\.json$/i.test(confFileName)) confFileName += '.json';
+    confFileName = parseDate(confFileName);
 
     var confDir = _defaultDir;
     if (isSolidString(dirPath)) {
@@ -68,9 +70,9 @@
       } else if (/^userProfile$/i.test(dirPath)) {
         confDir = _userProfileDir;
       } else if (path.isAbsolute(dirPath)) {
-        confDir = path.normalize(dirPath);
+        confDir = parseDate(path.normalize(dirPath));
       } else {
-        confDir = path.resolve(path.join(__dirname, dirPath));
+        confDir = parseDate(path.resolve(path.join(__dirname, dirPath)));
       }
     }
 
@@ -140,21 +142,26 @@
    *
    * conf.path; // %CD%\.wsh\settings.json
    * conf.store; // Returns: An Object in the above settings.json.
-   *
+   * @example
    * // Ex.2: Portable
    * var conf = new Wsh.ConfigStore(null, { dirPath: 'portable' });
    *
    * conf.path; // <Wsh Script Directory>\.wsh\settings.json
-   *
+   * @example
    * // Ex.3: UserProfile
    * var conf = new Wsh.ConfigStore('myStore', { dirPath: 'userProfile' });
    *
    * conf.path; // %USERPROFILE%\myStore.json
+   * @example
+   * // Ex.4: Specifing absolute directory path
+   * var conf = new Wsh.ConfigStore(null, { dirPath: 'D:\\conf' });
    *
-   * // Ex.4: Specifing absolute path
-   * var conf = new Wsh.ConfigStore(null, { dirPath: 'C:\\tmp' });
+   * conf.path; // C:\conf\settings.json
    *
-   * conf.path; // C:\tmp\settings.json
+   * // Can use the date literal
+   * var conf = new Wsh.ConfigStore('vals_#{yy-MM}', { dirPath: 'D:\\confs' });
+   *
+   * conf.path; // C:\confs\vals_20-08.json
    * @name ConfigStore
    * @class
    * @param {string} [fileName] - The JSON file name to read/write.

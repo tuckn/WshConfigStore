@@ -1,7 +1,7 @@
 {
   "name": "@tuckn/WshConfigStore",
   "description": "The config manager for WSH (Windows Script Host) that reads/writes configuration values in a JSON file.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Tuckn <tuckn333+github@gmail.com>",
   "private": false,
   "license": "MIT",
@@ -46,6 +46,7 @@
     "test:name:CurrentWorkingDirectory": ".\\scripts\\Test ConfigStore -t CurrentWorkingDirectory",
     "test:name:Portable": ".\\scripts\\Test ConfigStore -t Portable",
     "test:name:UserProfile_CustomName": ".\\scripts\\Test ConfigStore -t UserProfile_CustomName",
+    "test:name:dateLiteralPath": ".\\scripts\\Test ConfigStore -t dateLiteralPath",
     "test:ConfigStore": ".\\scripts\\Test ConfigStore",
     "build": "wsh-packager bundle ./Package.wsf",
     "test:dist:module": ".\\scripts\\Test dist:module",

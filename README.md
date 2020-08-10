@@ -142,9 +142,13 @@ conf.path; // Returns: <Wsh Script Directory>\.wsh\settings.json
 var conf = new Wsh.ConfigStore('myStore', { dirPath: 'userProfile' });
 conf.path; // Returns: %USERPROFILE%\myStore.json
 
-// Specifing absolute path
-var conf = new Wsh.ConfigStore(null, { dirPath: 'C:\\tmp' });
-conf.path; // Returns: C:\tmp\settings.json
+// Specifing absolute directory path
+var conf = new Wsh.ConfigStore(null, { dirPath: 'C:\\conf' });
+conf.path; // Returns: C:\conf\settings.json
+
+// Can use the date literal
+var conf = new Wsh.ConfigStore('vals_#{yy-MM}', { dirPath: 'D:\\confs' });
+conf.path; // Returns: C:\confs\vals_20-08.json
 ```
 
 ### Dependency Modules

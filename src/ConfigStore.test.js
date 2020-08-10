@@ -7,11 +7,14 @@
 /* globals expect: false */
 
 // Shorthand
+var util = Wsh.Util;
 var path = Wsh.Path;
 var os = Wsh.OS;
 var fs = Wsh.FileSystem;
 var fse = Wsh.FileSystemExtra;
 var ConfigStore = Wsh.ConfigStore;
+
+var parseDate = util.parseDateLiteral;
 
 describe('ConfigStore', function () {
   var DEF_DIRNAME = '.wsh';
@@ -139,5 +142,34 @@ describe('ConfigStore', function () {
     // Cleans
     fse.removeSync(userProfilePath);
     expect(fs.existsSync(userProfilePath)).toBe(false);
+  });
+
+  test('dateLiteralPath', function () {
+    var confDir = os.makeTmpPath('WshConfigStore');
+    var dtLiteral = 'vals_#{yyyy-MM}';
+    var dtStr = parseDate(dtLiteral);
+    var confPath = path.join(confDir, dtStr + '.json');
+
+    fse.removeSync(confPath);
+    expect(fs.existsSync(confPath)).toBe(false);
+
+    var conf = new ConfigStore(dtLiteral, { dirPath: confDir });
+
+    expect(conf.path).toBe(confPath);
+    expect(conf.store).toEqual({});
+
+    // Sets multiple items at once
+    var obj = { a: [{ b: { c: 3 } }], d: 'D' };
+    expect(conf.set(obj)).toEqual(undefined);
+    expect(fs.existsSync(confPath)).toBe(true);
+    // Gets all the config
+    expect(conf.store).toEqual(obj);
+
+    var jsonObj = fse.readJsonSync(conf.path);
+    expect(jsonObj).toEqual(conf.store);
+
+    // Cleans
+    fse.removeSync(confDir);
+    expect(fs.existsSync(confDir)).toBe(false);
   });
 });
