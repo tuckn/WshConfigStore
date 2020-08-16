@@ -153,7 +153,7 @@
    *
    * conf.path; // %USERPROFILE%\myStore.json
    * @example
-   * // Ex.4: Specifing absolute directory path
+   * // Ex.4: Specifying absolute directory path
    * var conf = new Wsh.ConfigStore(null, { dirPath: 'D:\\conf' });
    *
    * conf.path; // C:\conf\settings.json
