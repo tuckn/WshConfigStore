@@ -1,6 +1,6 @@
 # WshConfigStore
 
-The config manager for WSH (Windows Script Host) that reads/writes configuration values in a JSON file.
+The config manager for WSH (Windows Script Host) reads/writes configuration values in a JSON file.
 
 ## tuckn/WshModeJs basic applications structure
 
@@ -9,9 +9,9 @@ The config manager for WSH (Windows Script Host) that reads/writes configuration
 &emsp;&emsp;├─ WshConfigStore - This repository (./dist/module.js)  
 &emsp;&emsp;├─ [WshDotEnv](https://github.com/tuckn/WshDotEnv) (./dist/module.js)  
 &emsp;&emsp;├─ [WshLogger](https://github.com/tuckn/WshLogger) (./dist/module.js)  
-&emsp;&emsp;└─ [WshModeJs](https://github.com/tuckn/WshModeJs) (./dist/bundle.js)
+&emsp;&emsp;└─ [WshModeJs](https://github.com/tuckn/WshModeJs) (./dist/bundle.js)  
 
-WshBasicApps can use all the above modules functions.
+WshBasicApps can use all the above modules.
 
 ## Operating environment
 
@@ -26,7 +26,7 @@ D:\> mkdir MyWshProject
 D:\> cd MyWshProject
 ```
 
-(2) Download this ZIP and unzipping or Use the following `git` command.
+(2) Download this ZIP and unzip or Use the following `git` command.
 
 ```console
 > git clone https://github.com/tuckn/WshConfigStore.git ./WshModules/WshConfigStore
@@ -34,14 +34,24 @@ or
 > git submodule add https://github.com/tuckn/WshConfigStore.git ./WshModules/WshConfigStore
 ```
 
-(3) Include _.\\WshConfigStore\\dist\\bundle.js_ into your .wsf file.
-For Example, if your file structure is
+(3) Create your JScript (.js) file. For Example,
 
 ```console
 D:\MyWshProject\
-├─ .wsh\
-│  └─ settings.json
-├─ Run.wsf
+├─ MyScript.js <- Your JScript code will be written in this.
+└─ WshModules\
+    └─ WshConfigStore\
+        └─ dist\
+          └─ bundle.js
+```
+
+I recommend JScript (.js) file encoding to be UTF-8 [BOM, CRLF].
+
+(4) Create your WSF packaging scripts file (.wsf).
+
+```console
+D:\MyWshProject\
+├─ Run.wsf <- WSH entry file
 ├─ MyScript.js
 └─ WshModules\
     └─ WshConfigStore\
@@ -49,7 +59,8 @@ D:\MyWshProject\
           └─ bundle.js
 ```
 
-The content of above _Run.wsf_ is
+And you should include _.../dist/bundle.js_ into the WSF file.
+For Example, The content of the above _Run.wsf_ is
 
 ```xml
 <package>
@@ -60,35 +71,9 @@ The content of above _Run.wsf_ is
 </package>
 ```
 
-I recommend this .wsf file encoding to be UTF-8 [BOM, CRLF].
-This allows the following functions to be used in _.\\MyScript.js_.
+I recommend this WSH file (.wsf) encoding to be UTF-8 [BOM, CRLF].
 
-### Together with another WshModeJs Apps
-
-If you want to use it together with another WshModeJs Apps, install as following
-
-```console
-> git clone https://github.com/tuckn/WshModeJs.git ./WshModules/WshModeJs
-> git clone https://github.com/tuckn/WshCommander.git ./WshModules/WshCommander
-> git clone https://github.com/tuckn/WshConfigStore.git ./WshModules/WshConfigStore
-or
-> git submodule add https://github.com/tuckn/WshModeJs.git ./WshModules/WshModeJs
-> git submodule add https://github.com/tuckn/WshCommander.git ./WshModules/WshCommander
-> git submodule add https://github.com/tuckn/WshConfigStore.git ./WshModules/WshConfigStore
-```
-
-```xml
-<package>
-  <job id = "run">
-    <script language="JScript" src="./WshModules/WshModeJs/dist/bundle.js"></script>
-    <script language="JScript" src="./WshModules/WshCommander/dist/module.js"></script>
-    <script language="JScript" src="./WshModules/WshConfigStore/dist/module.js"></script>
-    <script language="JScript" src="./MyScript.js"></script>
-  </job>
-</package>
-```
-
-If you have no special circumstances, I recommend using [WshBasicApps](https://github.com/tuckn/WshBasicPackage).
+Awesome! This WSH configuration allows you to use the following functions in JScript (_.\\MyScript.js_).
 
 ## Usage
 
@@ -151,9 +136,41 @@ var conf = new Wsh.ConfigStore('vals_#{yy-MM}', { dirPath: 'D:\\confs' });
 conf.path; // Returns: C:\confs\vals_20-08.json
 ```
 
+### Together with another WshModeJs Apps
+
+If you want to use it together with other WshModeJs Apps, install as following
+
+```console
+> git clone https://github.com/tuckn/WshModeJs.git ./WshModules/WshModeJs
+> git clone https://github.com/tuckn/WshCommander.git ./WshModules/WshCommander
+> git clone https://github.com/tuckn/WshConfigStore.git ./WshModules/WshConfigStore
+or
+> git submodule add https://github.com/tuckn/WshModeJs.git ./WshModules/WshModeJs
+> git submodule add https://github.com/tuckn/WshCommander.git ./WshModules/WshCommander
+> git submodule add https://github.com/tuckn/WshConfigStore.git ./WshModules/WshConfigStore
+```
+
+The definition in the WSF packaging scripts file (.wsf) is as follows.
+
+```xml
+<package>
+  <job id = "run">
+    <script language="JScript" src="./WshModules/WshModeJs/dist/bundle.js"></script>
+    <script language="JScript" src="./WshModules/WshCommander/dist/module.js"></script>
+    <script language="JScript" src="./WshModules/WshConfigStore/dist/module.js"></script>
+    <script language="JScript" src="./MyScript.js"></script>
+  </job>
+</package>
+```
+
+Please note the difference between `.../dist/bundle.js` and `.../dist/module.js`.
+
+I recommend using [WshBasicApps](https://github.com/tuckn/WshBasicPackage).
+That includes all modules.
+
 ### Dependency Modules
 
-You can also use the following useful functions in _.\\MyScript.js_ (JScript).
+You can also use the following helper functions in your JScript (_.\\MyScript.js_).
 
 - [tuckn/WshPolyfill](https://github.com/tuckn/WshPolyfill)
 - [tuckn/WshUtil](https://github.com/tuckn/WshUtil)
