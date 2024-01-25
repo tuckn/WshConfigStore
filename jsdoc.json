@@ -37,9 +37,9 @@
     "openGraph": {
       "title": "WshConfigStore",
       "type": "website",
-      "image": "https://docs.tuckn.net/WshConfigStore/img/openGraph-image.png",
+      "image": "https://tuckn.net/docs/WshConfigStore/img/openGraph-image.png",
       "site_name": "@tuckn/WshConfigStore",
-      "url": "https://docs.tuckn.net/WshConfigStore"
+      "url": "https://tuckn.net/docs/WshConfigStore/"
     },
     "meta": {
       "title": "WshConfigStore",

@@ -167,7 +167,7 @@
    * @param {string} [fileName] - The JSON file name to read/write.
    * @param {object} [options] - Optional parameters.
    * @param {string} [options.dirPath] - 'cwd', 'portable', 'userProfile', <Directory Path>
-   * @param {object} [options.fileOptions] - See options of {@link https://docs.tuckn.net/WshFileSystem/Wsh.FileSystemExtra.html#.writeJsonSync|Wsh.FileSystemExtra.writeJsonSync}
+   * @param {object} [options.fileOptions] - See options of {@link https://tuckn.net/docs/WshFileSystem/Wsh.FileSystemExtra.html#.writeJsonSync|Wsh.FileSystemExtra.writeJsonSync}
    * @returns {object} - Wsh.ConfigStore instance.
    */
   Wsh.ConfigStore = function (fileName, options) {
